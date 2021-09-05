@@ -45,9 +45,6 @@ class MainActivity : AppCompatActivity() {
         var drawCard2Action = Random.nextInt(0, 13)
         card1TV.setImageResource(showCardImage[drawCard1Action])
         card2TV.setImageResource(showCardImage[drawCard2Action])
-        pointTV.text = totalPoints.toString()
-        roundNumberTV.text = roundNumber.toString()
-        roundNumber += 1
 
         if (drawCard1Action == 0 && drawCard2Action == 0){
             totalPoints += 50
@@ -74,6 +71,10 @@ class MainActivity : AppCompatActivity() {
                 cardGroupStatus.text = ""
                 pointTextRefect.text = "Loses 1 Point"
         }
-    }
 
+        roundNumber += 1
+        pointTV.text = totalPoints.toString()
+        roundNumberTV.text = roundNumber.toString()
+
+    }
 }
