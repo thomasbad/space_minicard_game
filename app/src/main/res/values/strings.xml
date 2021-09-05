@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mini Card Game</string>
+    <string name="play">PLAY</string>
+    <string name="card_1_image_display">Card 1 Image Display</string>
+    <string name="card_2_image_display">Card 2 Image Display</string>
+    <string name="total_points">Total Points</string>
+    <string name="_0">0</string>
+    <string name="round">Round #</string>
+</resources>
