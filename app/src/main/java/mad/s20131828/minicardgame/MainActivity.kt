@@ -2,6 +2,8 @@ package mad.s20131828.minicardgame
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,6 +11,12 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+
+    //Default Game related numbers and array
     var totalPoints = 0
     var roundNumber = 0
     val cardDisplay = arrayOf("Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
@@ -28,12 +36,15 @@ class MainActivity : AppCompatActivity() {
         R.drawable.card_k
     )
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    //Function of restart game button
+    fun restartGame(v:View){
+        finish()
+        startActivity(getIntent())
     }
 
+
+
+    //create action and run game after click the Play button
     fun generateNextCard(v: View) {
         var card1TV = findViewById<ImageView>(R.id.card1TV)
         var card2TV = findViewById<ImageView>(R.id.card2TV)
@@ -43,12 +54,16 @@ class MainActivity : AppCompatActivity() {
         var pointTextRefect = findViewById<TextView>(R.id.pointTextRefect)
         var drawCard1Action = Random.nextInt(0, 13)
         var drawCard2Action = Random.nextInt(0, 13)
+
+        //Card Change method
         card1TV.setImageResource(showCardImage[drawCard1Action])
         card2TV.setImageResource(showCardImage[drawCard2Action])
 
+
+        //different points give out when specific cards combination meets
         if (drawCard1Action == 0 && drawCard2Action == 0){
             totalPoints += 50
-            cardGroupStatus.text = "One Pair of Ace"
+            cardGroupStatus.text = "One Pair of " + cardDisplay[drawCard1Action]
             pointTextRefect.text = "Wins 50 Points"
         }else if ((drawCard1Action in 1..8) && drawCard2Action == drawCard1Action) {
             totalPoints += 5
@@ -56,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             pointTextRefect.text = "Wins 5 Points"
         }else if (drawCard1Action == 9 && drawCard2Action == 9){
             totalPoints += 10
-            cardGroupStatus.text = "One Pair of 10"
+            cardGroupStatus.text = "One Pair of " + cardDisplay[drawCard1Action]
             pointTextRefect.text = "Wins 10 Points"
         }else if ((drawCard1Action in 10..12) && drawCard2Action == drawCard1Action){
                 totalPoints += 20
@@ -64,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 pointTextRefect.text = "Wins 20 Points"
             }else if ((drawCard1Action == 0 || drawCard2Action == 0) && drawCard1Action != drawCard2Action){
                 totalPoints += 2
-                cardGroupStatus.text = "One Ace"
+                cardGroupStatus.text = "One " + cardDisplay[0]
                 pointTextRefect.text = "Wins 2 Points"
             }else{
                 totalPoints -= 1

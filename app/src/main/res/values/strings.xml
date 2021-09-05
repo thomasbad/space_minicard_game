@@ -7,4 +7,6 @@
     <string name="_0">0</string>
     <string name="round">Round #</string>
     <string name="background">background</string>
+    <string name="button_used_to_restart_game">Button used to restart game</string>
+    <string name="app_background">App Background</string>
 </resources>
