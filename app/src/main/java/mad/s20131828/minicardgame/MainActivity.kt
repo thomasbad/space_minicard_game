@@ -1,9 +1,8 @@
 package mad.s20131828.minicardgame
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,6 +13,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        bgmPlay() //run background music if the app alive
+    }
+
+    //create background music function
+    fun bgmPlay() {
+        var bgMusic = MediaPlayer.create(this, R.raw.bgm)
+        bgMusic.isLooping = true
+        bgMusic.start()
+    }
+
+    //create flip card sound effect
+    fun cardFlipPlay(){
+        var cardFlip = MediaPlayer.create(this, R.raw.flipcardsound)
+        cardFlip.start()
     }
 
     //Default Game related numbers and array
@@ -42,8 +55,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(getIntent())
     }
 
-
-
     //create action and run game after click the Play button
     fun generateNextCard(v: View) {
         var card1TV = findViewById<ImageView>(R.id.card1TV)
@@ -54,6 +65,9 @@ class MainActivity : AppCompatActivity() {
         var pointTextRefect = findViewById<TextView>(R.id.pointTextRefect)
         var drawCard1Action = Random.nextInt(0, 13)
         var drawCard2Action = Random.nextInt(0, 13)
+
+        //Play card flipping sound effect
+        cardFlipPlay()
 
         //Card Change method
         card1TV.setImageResource(showCardImage[drawCard1Action])
