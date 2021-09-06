@@ -9,4 +9,6 @@
     <string name="background">background</string>
     <string name="button_used_to_restart_game">Button used to restart game</string>
     <string name="app_background">App Background</string>
+    <string name="restart_game_button">Restart Game button</string>
+    <string name="reset">RESET</string>
 </resources>

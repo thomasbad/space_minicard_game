@@ -1,5 +1,6 @@
 package mad.s20131828.minicardgame
 
+import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,32 +9,49 @@ import android.widget.ImageView
 import android.widget.TextView
 import kotlin.random.Random
 
+
 class MainActivity : AppCompatActivity() {
+    //create var for background music named bgMusic as null
+    private var bgMusic: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bgmPlay() //run background music if the app alive
+        //Import BGM to MediaPlayer object inside bgMusic
+        bgMusic = MediaPlayer.create(this, R.raw.bgm)
     }
 
-    //create background music function
-    fun bgmPlay() {
-        var bgMusic = MediaPlayer.create(this, R.raw.bgm)
-        bgMusic.isLooping = true
-        bgMusic.start()
+    override fun onResume() {
+        super.onResume()
+        bgMusic?.start() //Play Music once app is onResume status
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //Pause the music if app is inactive and kill the bgm by its logic
+        //when restart button is click
+        bgMusic?.pause()
+    }
+
+    //Function of restart game button
+    fun restartGame(v:View){
+        finish()
+        startActivity(intent)
     }
 
     //create flip card sound effect
-    fun cardFlipPlay(){
-        var cardFlip = MediaPlayer.create(this, R.raw.flipcardsound)
+    private fun cardFlipPlay(){
+        val cardFlip = MediaPlayer.create(this, R.raw.flipcardsound)
         cardFlip.start()
     }
 
     //Default Game related numbers and array
-    var totalPoints = 0
-    var roundNumber = 0
-    val cardDisplay = arrayOf("Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
-    val showCardImage = arrayOf(
+    private var totalPoints = 0 //var of Total Points earned
+    private var roundNumber = 0 //var of how many rounds have been run
+    //Array of cards in String form
+    private val cardDisplay = arrayOf("Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
+    //Array of cards for their ImageView form
+    private val showCardImage = arrayOf(
         R.drawable.card_ace,
         R.drawable.card2,
         R.drawable.card3,
@@ -49,22 +67,18 @@ class MainActivity : AppCompatActivity() {
         R.drawable.card_k
     )
 
-    //Function of restart game button
-    fun restartGame(v:View){
-        finish()
-        startActivity(getIntent())
-    }
-
     //create action and run game after click the Play button
-    fun generateNextCard(v: View) {
-        var card1TV = findViewById<ImageView>(R.id.card1TV)
-        var card2TV = findViewById<ImageView>(R.id.card2TV)
-        var pointTV = findViewById<TextView>(R.id.pointTV)
-        var roundNumberTV = findViewById<TextView>(R.id.roundNumberTV)
-        var cardGroupStatus = findViewById<TextView>(R.id.cardGroupStatus)
-        var pointTextRefect = findViewById<TextView>(R.id.pointTextRefect)
-        var drawCard1Action = Random.nextInt(0, 13)
-        var drawCard2Action = Random.nextInt(0, 13)
+    @SuppressLint("SetTextI18n")
+    fun generateNextCard(v:View) {
+        //Import ImageView and TextView status into var
+        val card1TV = findViewById<ImageView>(R.id.card1TV)
+        val card2TV = findViewById<ImageView>(R.id.card2TV)
+        val pointTV = findViewById<TextView>(R.id.pointTV)
+        val roundNumberTV = findViewById<TextView>(R.id.roundNumberTV)
+        val cardGroupStatus = findViewById<TextView>(R.id.cardGroupStatus)
+        val pointTextRefect = findViewById<TextView>(R.id.pointTextRefect)
+        val drawCard1Action = Random.nextInt(0, 13)
+        val drawCard2Action = Random.nextInt(0, 13)
 
         //Play card flipping sound effect
         cardFlipPlay()
@@ -72,7 +86,6 @@ class MainActivity : AppCompatActivity() {
         //Card Change method
         card1TV.setImageResource(showCardImage[drawCard1Action])
         card2TV.setImageResource(showCardImage[drawCard2Action])
-
 
         //different points give out when specific cards combination meets
         if (drawCard1Action == 0 && drawCard2Action == 0){
@@ -101,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                 pointTextRefect.text = "Loses 1 Point"
         }
 
-        roundNumber += 1
+        roundNumber += 1 //add 1 round per click on button
         pointTV.text = totalPoints.toString()
         roundNumberTV.text = roundNumber.toString()
 
